@@ -1,0 +1,22 @@
+local DEFAULT_CD = 0.2 -- можешь менять (0.05, 0.1 и т.д.)
+
+local lastAttack = {}
+
+game.ReplicatedStorage.AttackEvent.OnServerEvent:Connect(function(player)
+	if not player.Character then return end
+	
+	local currentTime = tick()
+	
+	if lastAttack[player] and (currentTime - lastAttack[player]) < DEFAULT_CD then
+		return
+	end
+	
+	lastAttack[player] = currentTime
+	
+	-- ЛОГИКА УДАРА ТУТ
+	print(player.Name .. " ударил")
+end)
+
+game.Players.PlayerRemoving:Connect(function(player)
+	lastAttack[player] = nil
+end)
